@@ -27,3 +27,7 @@ header #author, #translator {
 p {
 	text-align: justify;
 }
+
+#works a {
+	font-style: italic;
+}
