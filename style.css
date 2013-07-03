@@ -1,5 +1,5 @@
-/*@import url('normalize.css');
-@import url('typeplate.css');*/
+@import url('normalize.css');
+@import url('typeplate.css');
 
 body {
 	-moz-font-feature-settings: "liga=1, dlig=1";
@@ -10,7 +10,7 @@ body {
 	max-width: 800px;
 	margin-left: auto;
 	margin-right: auto;
-	font-family: "Hoefler Text", "Baskerville old face", Garamond, "Times New Roman", serif;
+	font-family: "adobe-garamond-pro", serif;
 }
 
 h1, h2 {
@@ -19,10 +19,4 @@ h1, h2 {
 
 header #author, #translator {
 	text-align: center;
-}
-
-#fontselector {
-	position: absolute;
-	top: 10px;
-	right: 10px;
 }
