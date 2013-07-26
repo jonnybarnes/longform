@@ -16,14 +16,15 @@ f = open('template')
 template = f.read()
 s = Template(template)
 
-dir = 'books/'
-listing = os.listdir(dir)
+wwwdir = 'www/'
+
+booksdir = 'books/'
+listing = os.listdir(booksdir)
 for book in listing:
-	handle = open(dir + book)
+	handle = open(booksdir + book)
 	dom = etree.parse(handle)
 	title = getTitle(dom)
 	content = getContent(dom)
-	#print("Title: %s" % title)
-	#print("Content: %s" % content)
 	bookHTML = s.safe_substitute(title=title, text=content)
-	print(bookHTML)
+	filename = book.replace('xml', 'html')
+	print("Printed %(title)s to %(filename)s" % {"title": title, "filename": filename})
