@@ -27,4 +27,9 @@ for book in listing:
 	content = getContent(dom)
 	bookHTML = s.safe_substitute(title=title, text=content)
 	filename = book.replace('xml', 'html')
-	print("Printed %(title)s to %(filename)s" % {"title": title, "filename": filename})
+	savepath = wwwdir + filename
+	try:
+		print(bookHTML, file=wwwdir + filename)
+	except:
+		print("Error saving %(title)s to %(file)s" % {"title": title, "file": savepath})
+	print("Saved %(title)s to %(filename)s" % {"title": title, "filename": filename})
