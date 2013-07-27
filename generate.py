@@ -4,6 +4,9 @@ import os
 from string import Template
 from lxml import etree
 
+wwwdir = 'www/'
+booksdir = 'books/'
+
 def getTitle(lxmldom):
 	for t in lxmldom.xpath("//title"):
 		return t.text
@@ -16,9 +19,6 @@ f = open('template')
 template = f.read()
 s = Template(template)
 
-wwwdir = 'www/'
-
-booksdir = 'books/'
 listing = os.listdir(booksdir)
 for book in listing:
 	handle = open(booksdir + book)
@@ -29,7 +29,9 @@ for book in listing:
 	filename = book.replace('xml', 'html')
 	savepath = wwwdir + filename
 	try:
-		print(bookHTML, file=wwwdir + filename)
+		writer = open(wwwdir + filename, 'w')
+		writer.write(bookHTML)
+		writer.close()
+		print("Saved %(title)s to %(filename)s" % {"title": title, "filename": filename})
 	except:
 		print("Error saving %(title)s to %(file)s" % {"title": title, "file": savepath})
-	print("Saved %(title)s to %(filename)s" % {"title": title, "filename": filename})
