@@ -25,7 +25,7 @@ for book in listing:
 	dom = etree.parse(handle)
 	title = getTitle(dom)
 	content = getContent(dom)
-	bookHTML = s.safe_substitute(title=title, text=content)
+	bookHTML = s.safe_substitute(title=title, content=content)
 	filename = book.replace('xml', 'html')
 	savepath = wwwdir + filename
 	try:
