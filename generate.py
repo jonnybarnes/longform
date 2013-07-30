@@ -3,6 +3,7 @@
 import os
 from string import Template
 from lxml import etree
+from bs4 import BeautifulSoup
 
 wwwdir = 'www/'
 booksdir = 'books/'
@@ -39,6 +40,8 @@ for book in listing:
 	author = getAuthor(dom)
 	category = getCategory(dom)
 	bookHTML = s.safe_substitute(title=title, content=content)
+	soup = BeautifulSoup(bookHTML)
+	prettyBookHTML = soup.prettify()
 	filename = book.replace('xml', 'html')
 	if(category == 'fiction'):
 		fiction[filename] = title
@@ -47,7 +50,7 @@ for book in listing:
 	savepath = wwwdir + filename
 	try:
 		writer = open(wwwdir + filename, 'w')
-		writer.write(bookHTML)
+		writer.write(prettyBookHTML)
 		writer.close()
 		print("Saved %(title)s to %(filename)s" % {"title": title, "filename": filename})
 	except:
