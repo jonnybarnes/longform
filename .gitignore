@@ -1,3 +1,2 @@
-errors.txt
-html-tidy-config.txt
 www/
+__pycache__/
