@@ -3,7 +3,7 @@
 import os
 from string import Template
 from lxml import etree
-from bs4 import BeautifulSoup
+from bs4 import BeautifulSoup, UnicodeDammit
 from smartypants import smartyPants
 
 wwwdir = 'www/'
@@ -25,6 +25,12 @@ def getCategory(lxmldom):
 	for cat in lxmldom.xpath("//category"):
 		return cat.text
 
+def smartPrettify(html):
+	sp = smartyPants(html)
+	soup = BeautifulSoup(sp, "html.parser")
+	prettyHTML = soup.prettify()
+	return prettyHTML
+
 ft = open('template')
 template = ft.read()
 s = Template(template)
@@ -41,18 +47,16 @@ for book in listing:
 	author = getAuthor(dom)
 	category = getCategory(dom)
 	bookHTML = s.safe_substitute(title=title, content=content)
-	soup = BeautifulSoup(bookHTML, "html.parser")
-	prettyBookHTML = soup.prettify()
-	smartPrettyBookHTML = smartyPants(prettyBookHTML)
+	prettyHTML = smartPrettify(bookHTML)
 	filename = book.replace('xml', 'html')
 	if(category == 'fiction'):
 		fiction[filename] = title
-	else:
+	if(category == 'non-fiction'):
 		nonfiction[filename] = title
 	savepath = wwwdir + filename
 	try:
 		writer = open(wwwdir + filename, 'w')
-		writer.write(smartPrettyBookHTML)
+		writer.write(prettyHTML)
 		writer.close()
 		print("Saved %(title)s to %(filename)s" % {"title": title, "filename": filename})
 	except:
@@ -64,7 +68,7 @@ nonfictionLinks = ''
 for key, value in fiction.items():
     fictionLinks = fictionLinks + '<li><a href="' + key  + '">' + value + '</a></li>'
 for key, value in nonfiction.items():
-    fictionLinks += '<li><a href="' + key  + '">' + value + '</a></li>'
+    nonfictionLinks = nonfictionLinks + '<li><a href="' + key  + '">' + value + '</a></li>'
 indexContemt = """<header>
     <h1>A GOOD LONG READ</h1>
   </header>
@@ -85,9 +89,10 @@ indexContemt = """<header>
   <p>This site is presented in Adobe Garamond Pro served by <a href="https://typekit.com/">Typekit</a>, the typography is aided by <a href="http://typeplate.com/">Typeplate</a>. The text for the books are provided by the <a href="http://www.gutenberg.org/">Gutenberg Project</a>. You can get in touch with me vie <a href="https://twitter.com/jonnybarnes">Twitter</a>, <a href="https://alpha.app.net/jonnybarnes">App.net</a>, or <a href="mailto:jonny@jonnybarnes.net">e-mail</a>.</p>"""
 
 indexHTML = s.safe_substitute(title=indexTitle, content=indexContemt)
+prettyIndex = smartPrettify(indexHTML)
 try:
 	writer = open(wwwdir + 'index.html', 'w')
-	writer.write(indexHTML)
+	writer.write(prettyIndex)
 	writer.close()
 	print('Saved index.html')
 except:
