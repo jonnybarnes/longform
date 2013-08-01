@@ -50,9 +50,9 @@ for book in listing:
 	prettyHTML = smartPrettify(bookHTML)
 	filename = book.replace('xml', 'html')
 	if(category == 'fiction'):
-		fiction[filename] = title
+		fiction[filename] = [title, author]
 	if(category == 'non-fiction'):
-		nonfiction[filename] = title
+		nonfiction[filename] = [title, author]
 	savepath = wwwdir + filename
 	try:
 		writer = open(wwwdir + filename, 'w')
@@ -66,9 +66,9 @@ indexTitle = 'A Good Long Read'
 fictionLinks = ''
 nonfictionLinks = ''
 for key, value in fiction.items():
-    fictionLinks = fictionLinks + '<li><a href="' + key  + '">' + value + '</a></li>'
+    fictionLinks = fictionLinks + '<li><a href="' + key  + '">' + value[0] + '</a> by ' + value[1] + '</li>'
 for key, value in nonfiction.items():
-    nonfictionLinks = nonfictionLinks + '<li><a href="' + key  + '">' + value + '</a></li>'
+    nonfictionLinks = nonfictionLinks + '<li><a href="' + key  + '">' + value[0] + '</a> by ' + value[1] + '</li>'
 indexContemt = """<header>
     <h1>A GOOD LONG READ</h1>
   </header>
@@ -89,10 +89,9 @@ indexContemt = """<header>
   <p>This site is presented in Adobe Garamond Pro served by <a href="https://typekit.com/">Typekit</a>, the typography is aided by <a href="http://typeplate.com/">Typeplate</a>. The text for the books are provided by the <a href="http://www.gutenberg.org/">Gutenberg Project</a>. You can get in touch with me vie <a href="https://twitter.com/jonnybarnes">Twitter</a>, <a href="https://alpha.app.net/jonnybarnes">App.net</a>, or <a href="mailto:jonny@jonnybarnes.net">e-mail</a>.</p>"""
 
 indexHTML = s.safe_substitute(title=indexTitle, content=indexContemt)
-prettyIndex = smartPrettify(indexHTML)
 try:
 	writer = open(wwwdir + 'index.html', 'w')
-	writer.write(prettyIndex)
+	writer.write(indexHTML)
 	writer.close()
 	print('Saved index.html')
 except:
