@@ -3,7 +3,7 @@
 import os
 from string import Template
 from lxml import etree
-from bs4 import BeautifulSoup, UnicodeDammit
+from bs4 import BeautifulSoup
 from smartypants import smartyPants
 
 wwwdir = 'www/'
